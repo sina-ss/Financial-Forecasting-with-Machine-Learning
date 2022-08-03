@@ -1,15 +1,6 @@
-import pandas as pd
-import pandas_datareader.data as pdr
-from pandas_datareader import data as pdr
-import numpy as np
-import datetime as dt
-import talib as ta
 import matplotlib.pyplot as plt
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.datasets import load_breast_cancer
-from sklearn.metrics import roc_auc_score, roc_curve, confusion_matrix, classification_report
-from sklearn.model_selection import cross_val_score, train_test_split
-import yfinance as yf
+from sklearn.metrics import roc_auc_score, roc_curve, confusion_matrix
 from data_loader import DataReader
 
 def getXY(df ,n, needIndicator):

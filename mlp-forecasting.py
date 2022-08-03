@@ -1,12 +1,6 @@
-from tabnanny import verbose
 from keras.models import Sequential
-from keras.layers import Dense, Dropout
-from sklearn.model_selection import train_test_split
-from keras.utils import plot_model
 from keras.optimizers import RMSprop
 from data_loader import DataReader
-import pandas as pd
-import numpy as np
 from keras import losses
 
 def getXY(df ,n, needIndicator):
