@@ -1,5 +1,7 @@
 from keras.models import Sequential
+from keras.layers import Dense
 from keras.optimizers import RMSprop
+from sklearn.metrics import normalized_mutual_info_score
 from data_loader import DataReader
 from keras import losses
 
@@ -47,9 +49,13 @@ def getXYTrain(df, X, y):
     return  X_train, X_test, y_train, y_test
 
 
-def getModel():
+def getModel(n, needIndicator):
+    if (needIndicator == 1):
+        indiNumber = 4
+    else:
+        indiNumber = 0
     model = Sequential()
-    model.add(Dense(64, input_dim=5, activation='relu'))
+    model.add(Dense(64, input_dim=(n + indiNumber), activation='relu'))
     model.add(Dense(64, activation='relu'))
     model.add(Dense(32, activation='relu'))
     model.add(Dense(1, activation='sigmoid'))
@@ -66,7 +72,7 @@ if __name__ == '__main__':
     needIndicator = int(input("Do You need Indicator? (0 for No and 1 for Yes!): "))
     X,y = getXY(df, n, needIndicator)
     X_train, X_test, y_train, y_test = getXYTrain(df, X, y)
-    model = getModel()
+    model = getModel(n, needIndicator)
     model.fit(X_train, y_train, epochs=100, verbose=0)
     loss, accuracy = model.evaluate(X_test, y_test)
     print("loss-price:")
@@ -74,8 +80,8 @@ if __name__ == '__main__':
     print("Accuracy-price:")
     print(accuracy)
     X,y = getRY(df, n, needIndicator)
-    X_train, X_test, y_train, y_test = getXYTrain(X, y)
-    model = getModel()
+    X_train, X_test, y_train, y_test = getXYTrain(df, X, y)
+    model = getModel(n, needIndicator)
     model.fit(X_train, y_train, epochs=100, verbose=0)
     loss, accuracy = model.evaluate(X_test, y_test)
     print("loss-return:")

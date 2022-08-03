@@ -69,7 +69,7 @@ if __name__ == '__main__':
     plt.legend(loc=4)
 
     X,y = getRY(df, n, needIndicator)
-    X_train, X_test, y_train, y_test = getXYTrain(X, y)
+    X_train, X_test, y_train, y_test = getXYTrain(df, X, y)
     plt.subplot(2, 1, 2)
     fpr_return, tpr_return, auc_return = getPilotInput(X_train, X_test, y_train, y_test)
     plt.plot(fpr_return,tpr_return,color='r',label="'Bitcoin-RETURN', auc="+str(auc_return))
