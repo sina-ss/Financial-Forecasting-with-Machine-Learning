@@ -58,20 +58,22 @@ def getPilotInput(X_train, X_test, y_train, y_test):
     return fpr, tpr, auc_p
 
 if __name__ == '__main__':
-    df = DataReader.readCryptoData()
-    n = int(input("Enter day range: "))
-    needIndicator = int(input("Do You need Indicator? (0 for No and 1 for Yes!): "))
-    X,y = getXY(df, n, needIndicator)
-    X_train, X_test, y_train, y_test = getXYTrain(df, X, y)
-    fpr_price, tpr_price, auc_price = getPilotInput(X_train, X_test, y_train, y_test)
-    plt.subplot(2, 1, 1)
-    plt.plot(fpr_price,tpr_price,label="data 1, auc="+str(auc_price))
-    plt.legend(loc=4)
-
-    X,y = getRY(df, n, needIndicator)
-    X_train, X_test, y_train, y_test = getXYTrain(df, X, y)
-    plt.subplot(2, 1, 2)
-    fpr_return, tpr_return, auc_return = getPilotInput(X_train, X_test, y_train, y_test)
-    plt.plot(fpr_return,tpr_return,color='r',label="'Bitcoin-RETURN', auc="+str(auc_return))
-    plt.legend(loc=4)
-    plt.show()
+    with open('Data\CryptoName.txt') as f:
+        crypto_names = f.readline().split(',')
+        for name in crypto_names:
+            df = DataReader.readCryptoData(name)
+            n = [2, 3, 5]
+            needIndicator = [0, 1]
+            print("====== name: {} ======".format(name))
+            for i in n:
+                for j in needIndicator:
+                    print("n = {} and has indicator? {}".format(i,j))
+                    X,y = getXY(df, i, j)
+                    X_train, X_test, y_train, y_test = getXYTrain(df, X, y)
+                    fpr_price, tpr_price, auc_price = getPilotInput(X_train, X_test, y_train, y_test)
+                    print("price auc: {}".format(auc_price))
+                    X,y = getRY(df, i, j)
+                    X_train, X_test, y_train, y_test = getXYTrain(df, X, y)
+                    fpr_return, tpr_return, auc_return = getPilotInput(X_train, X_test, y_train, y_test)
+                    print("return auc: {}".format(auc_return))
+            print("===================================")

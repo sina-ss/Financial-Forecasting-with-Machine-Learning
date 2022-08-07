@@ -2,9 +2,11 @@ from keras import callbacks
 from keras.models import Sequential
 from keras.layers import Dense
 from keras.optimizers import RMSprop
-from sklearn.metrics import normalized_mutual_info_score
 from data_loader import DataReader
 from keras import losses
+from keras.models import Sequential
+from keras.layers import Dense, Dropout , LSTM
+from keras.optimizers import RMSprop
 
 def getXY(df ,n, needIndicator):
     if (needIndicator == 0):
@@ -64,9 +66,10 @@ if __name__ == '__main__':
                     X,y = getXY(df, i, j)
                     X_train, X_test, y_train, y_test = getXYTrain(df, X, y)
                     model = Sequential()
-                    model.add(Dense(64, input_dim=(i + j*4), activation='relu'))
-                    model.add(Dense(64, activation='relu'))
-                    model.add(Dense(32, activation='relu'))
+                    model.add(LSTM(64, return_sequences=True,input_shape=(i + j*4, 1),activation='relu'))
+                    model.add(Dropout(0.2))
+                    model.add(LSTM(32,activation='relu'))
+                    model.add(Dropout(0.2))
                     model.add(Dense(1, activation='sigmoid'))
                     model.compile(loss=losses.BinaryCrossentropy(), optimizer =RMSprop(), metrics=['accuracy'])
 
